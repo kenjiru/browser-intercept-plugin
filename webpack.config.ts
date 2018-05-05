@@ -14,7 +14,7 @@ const config = {
     entry: {
         background: path.join(srcDir, './background.ts'),
         devtools_page: path.join(srcDir, './devtools_page.ts'),
-        devtools_panel: path.join(srcDir, './devtools_panel.ts'),
+        devtools_panel: path.join(srcDir, './devtools_panel.tsx'),
     },
     resolve: {
         extensions: ['.webpack.js', '.ts', '.tsx', '.js', '.json']
@@ -48,6 +48,7 @@ const config = {
             template: require('html-webpack-template'),
             filename: 'devtools_panel.html',
             inject: false,
+            appMountId: 'root',
         }),
         new CopyWebpackPlugin([
             {
