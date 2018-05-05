@@ -24,6 +24,20 @@ const config = {
             {
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader',
+            }, {
+                test: /\.css/,
+                loaders: ['style-loader', 'css-loader'],
+            }, {
+                test: /\.less/,
+                loaders: ['style-loader', 'css-loader', 'less-loader'],
+            }, {
+                test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
+                loader: "url-loader",
+                query: {
+                    limit: 5000,
+                    name: "[path][name].[ext]",
+                    hash: "[hash]"
+                }
             },
         ],
     },
