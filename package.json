@@ -25,11 +25,12 @@
     "web-ext": "^2.6.0",
     "web-ext-types": "^2.0.1",
     "webpack": "^4.7.0",
-    "webpack-cli": "^2.1.2"
+    "webpack-cli": "^2.1.2",
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
     "build": "webpack --mode=production",
-    "watch": "webpack --watch --mode=development",
+    "watch": "webpack-dev-server --mode=development",
     "clean": "rm -rf dist/",
     "web-ext": "web-ext run -s ./dist"
   },
