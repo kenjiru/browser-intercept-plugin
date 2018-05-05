@@ -1,1 +1,0 @@
-console.log('panel script 2');

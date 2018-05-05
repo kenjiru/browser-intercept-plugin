@@ -28,6 +28,5 @@
     },
     "default_title": "Intercept Plugin"
   },
-
-  "devtools_page": "devtools-page.html"
+  "devtools_page": "devtools_page.html"
 }
