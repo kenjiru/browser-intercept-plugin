@@ -22,6 +22,14 @@ const config = {
     module: {
         rules: [
             {
+                enforce: 'pre',
+                test: /\.tsx?$/,
+                loader: 'tslint-loader',
+                options: {
+                    typeCheck: false
+                },
+                exclude: /node_modules/,
+            }, {
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader',
             }, {
