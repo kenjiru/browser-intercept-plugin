@@ -1,11 +1,11 @@
-const targetPage = 'https://jsonplaceholder.typicode.com/*';
+const targetPage = "https://jsonplaceholder.typicode.com/*";
 
 function listener(details) {
-    let filter: any = browser.webRequest.filterResponseData(details.requestId);
-    let encoder = new TextEncoder();
+    const filter: any = browser.webRequest.filterResponseData(details.requestId);
+    const encoder = new TextEncoder();
 
-    filter.ondata = event => {
-        filter.write(encoder.encode('{"foo": "bar"}'));
+    filter.ondata = (event) => {
+        filter.write(encoder.encode("{'foo': 'bar'}"));
         filter.disconnect();
     };
 
@@ -15,17 +15,17 @@ function listener(details) {
 browser.webRequest.onBeforeRequest.addListener(
     listener,
     {
-        urls: [targetPage]
+        urls: [targetPage],
     },
-    ['blocking']
+    ["blocking"],
 );
 
 let isPluginEnabled: boolean = true;
 
-function updateToolbarButton(isPluginEnabled) {
+function updateToolbarButton(isEnabled) {
     let iconPath;
 
-    if (isPluginEnabled) {
+    if (isEnabled) {
         iconPath = {
             16: "icons/intercept-16.png",
             32: "icons/intercept-32.png",
@@ -38,10 +38,10 @@ function updateToolbarButton(isPluginEnabled) {
     }
 
     browser.browserAction.setIcon({
-        path: iconPath
+        path: iconPath,
     });
     browser.browserAction.setTitle({
-        title: isPluginEnabled ? 'Disable' : 'Enable',
+        title: isEnabled ? "Disable" : "Enable",
     });
 }
 
@@ -50,8 +50,6 @@ function togglePluginState() {
 }
 
 function handleToolbarIconClick() {
-    console.log('toolbar icon clicked!');
-
     togglePluginState();
     updateToolbarButton(isPluginEnabled);
 }

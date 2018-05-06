@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import "./panel/style.less";
-
 import Panel from "./panel/Panel";
+
+import "./panel/style.less";
 
 ReactDOM.render(
     <Panel />,
-    document.getElementById("root") as HTMLElement
+    document.getElementById("root") as HTMLElement,
 );
