@@ -1,7 +1,9 @@
-import {Table} from "antd";
 import * as React from "react";
+import {ReactElement} from "react";
 
 import "./Panel.less";
+
+import RequestTable from "./request-table/RequestTable";
 
 const dataSource = [{
     key: "1",
@@ -15,36 +17,11 @@ const dataSource = [{
     address: "10 Downing Street",
 }];
 
-const columns = [{
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-}, {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-}, {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-}];
-
 export default class Panel extends React.PureComponent {
-    private static getRowClassName(record: any, index: number): string {
-        return index % 2 === 0 ? "row-even" : "row-odd";
-    }
 
-    public render() {
+    public render(): ReactElement<RequestTable> {
         return (
-            <div>
-                <Table
-                    dataSource={dataSource}
-                    columns={columns}
-                    pagination={false}
-                    size="small"
-                    rowClassName={Panel.getRowClassName}
-                />
-            </div>
+            <RequestTable dataSource={dataSource} />
         );
     }
 }
