@@ -9,13 +9,17 @@ const columns = [{
     dataIndex: "name",
     key: "name",
 }, {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
 }, {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "Type",
+    dataIndex: "type",
+    key: "type",
+}, {
+    title: "Size",
+    dataIndex: "size",
+    key: "size",
 }];
 
 export default class RequestTable extends PureComponent<IRequestTableProps> {
@@ -26,6 +30,7 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
     public render(): ReactElement<any> {
         return (
             <Table
+                className="request-table"
                 dataSource={this.props.dataSource}
                 columns={columns}
                 pagination={false}
