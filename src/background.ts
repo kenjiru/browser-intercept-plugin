@@ -1,25 +1,3 @@
-const targetPage = "https://jsonplaceholder.typicode.com/*";
-
-function listener(details) {
-    const filter: any = browser.webRequest.filterResponseData(details.requestId);
-    const encoder = new TextEncoder();
-
-    filter.ondata = (event) => {
-        filter.write(encoder.encode("{'foo': 'bar'}"));
-        filter.disconnect();
-    };
-
-    return {};
-}
-
-browser.webRequest.onBeforeRequest.addListener(
-    listener,
-    {
-        urls: [targetPage],
-    },
-    ["blocking"],
-);
-
 let isPluginEnabled: boolean = true;
 
 function updateToolbarButton(isEnabled) {
@@ -37,10 +15,10 @@ function updateToolbarButton(isEnabled) {
         };
     }
 
-    browser.browserAction.setIcon({
+    chrome.browserAction.setIcon({
         path: iconPath,
     });
-    browser.browserAction.setTitle({
+    chrome.browserAction.setTitle({
         title: isEnabled ? "Disable" : "Enable",
     });
 }
@@ -54,4 +32,4 @@ function handleToolbarIconClick() {
     updateToolbarButton(isPluginEnabled);
 }
 
-browser.browserAction.onClicked.addListener(handleToolbarIconClick);
+chrome.browserAction.onClicked.addListener(handleToolbarIconClick);

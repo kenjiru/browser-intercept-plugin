@@ -9,11 +9,7 @@
       "es6",
       "dom"
     ],
-    "jsx": "react",
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/web-ext-types"
-    ]
+    "jsx": "react"
   },
   "include": [
     "./src/**/*"
