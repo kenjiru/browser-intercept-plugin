@@ -1,28 +1,36 @@
 import * as React from "react";
-import {ReactElement} from "react";
-
+import {PureComponent, ReactElement} from "react";
+import PanelService, {IRequestRow} from "./PanelService";
 import RequestTable from "./request-table/RequestTable";
 
 import "./Panel.less";
 
-const dataSource = [{
-    key: "1",
-    name: "backgroud_process.js",
-    status: 200,
-    type: "script",
-    size: "80KB",
-}, {
-    key: "2",
-    name: "resize_script.js",
-    status: 200,
-    type: "script",
-    size: "120KB",
-}];
+interface IPanelState {
+    requestRows: IRequestRow[];
+}
 
-export default class Panel extends React.PureComponent {
+export default class Panel extends PureComponent<any, IPanelState> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            requestRows: [],
+        };
+    }
+
+    public componentDidMount(): void {
+        setTimeout(() => {
+            PanelService.getRequestRows().then((requestRows) => {
+                this.setState({
+                    requestRows,
+                });
+            });
+        }, 1000);
+    }
+
     public render(): ReactElement<RequestTable> {
         return (
-            <RequestTable dataSource={dataSource} />
+            <RequestTable dataSource={this.state.requestRows} />
         );
     }
 }
