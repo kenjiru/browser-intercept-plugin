@@ -7,30 +7,41 @@ import WindowSize from "../window-size/WindowSize";
 
 import "./RequestTable.less";
 
+const compareStr = (first: string = "", second: string = ""): number => {
+    return first.toLowerCase().localeCompare(second.toLowerCase());
+}
+
+const compareNumber = (first: number, second: number): number => first - second;
+
 const columns = [{
     title: "Name",
     dataIndex: "name",
     key: "name",
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareStr(first.name, second.name),
 }, {
     title: "Method",
     dataIndex: "method",
     key: "method",
     width: 100,
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareStr(first.method, second.method),
 }, {
     title: "Status",
     dataIndex: "status",
     key: "status",
     width: 100,
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.status, second.status),
 }, {
     title: "Type",
     dataIndex: "type",
     key: "type",
     width: 80,
+    // sorter: stringSorter,
 }, {
     title: "Size",
     dataIndex: "size",
     key: "size",
     width: 100,
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.size, second.size),
 }];
 
 interface IRequestTableProps {
