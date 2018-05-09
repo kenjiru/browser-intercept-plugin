@@ -4,6 +4,7 @@ export interface IRequestRow {
     status: number;
     type: string;
     size: number;
+    time: number
 }
 
 export default class PanelService {
@@ -11,19 +12,20 @@ export default class PanelService {
         return new Promise((resolve, reject) => {
             chrome.devtools.network.getHAR((harLog: any) => {
                 const harEntries = harLog.entries;
-                const requestRows: IRequestRow[] = harEntries.map(PanelService.mapRequestToRow);
+                const requestRows: IRequestRow[] = harEntries.map(PanelService.mapEntryToRow);
 
                 resolve(requestRows);
             });
         });
     }
 
-    private static mapRequestToRow = (request) => ({
-        name: PanelService.getFileName(request.request.url),
-        method: request.request.method,
-        status: request.response.status,
+    private static mapEntryToRow = (entry) => ({
+        name: PanelService.getFileName(entry.request.url),
+        method: entry.request.method,
+        status: entry.response.status,
         type: "",
-        size: request.response.bodySize,
+        size: entry.response.bodySize,
+        time: Math.round(entry.time),
     })
 
     private static getFileName(path: string): string {

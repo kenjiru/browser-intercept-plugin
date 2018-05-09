@@ -42,6 +42,12 @@ const columns = [{
     key: "size",
     width: 100,
     sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.size, second.size),
+}, {
+    title: "Time",
+    dataIndex: "time",
+    key: "time",
+    width: 100,
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.time, second.time),
 }];
 
 interface IRequestTableProps {
