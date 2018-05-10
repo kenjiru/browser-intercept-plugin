@@ -9,7 +9,7 @@ import "./RequestTable.less";
 
 const compareStr = (first: string = "", second: string = ""): number => {
     return first.toLowerCase().localeCompare(second.toLowerCase());
-}
+};
 
 const compareNumber = (first: number, second: number): number => first - second;
 
@@ -38,7 +38,7 @@ const columns = [{
     sorter: (first: IRequestRow, second: IRequestRow): number => compareStr(first.type, second.type),
 }, {
     title: "Size",
-    dataIndex: "size",
+    dataIndex: "sizeString",
     key: "size",
     width: 100,
     sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.size, second.size),
