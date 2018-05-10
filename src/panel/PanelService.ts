@@ -23,7 +23,7 @@ export default class PanelService {
         name: PanelService.getFileName(entry.request.url),
         method: entry.request.method,
         status: entry.response.status,
-        type: "",
+        type: entry.response.content ? entry.response.content.mimeType : "",
         size: entry.response.bodySize,
         time: Math.round(entry.time),
     })

@@ -31,11 +31,11 @@ const columns = [{
     width: 100,
     sorter: (first: IRequestRow, second: IRequestRow): number => compareNumber(first.status, second.status),
 }, {
-    title: "Type",
+    title: "Mime Type",
     dataIndex: "type",
     key: "type",
-    width: 80,
-    // sorter: stringSorter,
+    width: 140,
+    sorter: (first: IRequestRow, second: IRequestRow): number => compareStr(first.type, second.type),
 }, {
     title: "Size",
     dataIndex: "size",
