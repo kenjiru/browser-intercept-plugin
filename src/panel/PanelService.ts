@@ -23,15 +23,31 @@ export default class PanelService {
         });
     }
 
-    private static mapEntryToRow = (entry) => ({
-        name: PanelService.getFileName(entry.request.url),
-        method: entry.request.method,
-        status: entry.response.status,
-        type: entry.response.content ? entry.response.content.mimeType : "",
-        size: entry.response.bodySize,
-        sizeString: PanelService.formatSize(entry.response.bodySize),
-        time: Math.round(entry.time),
-    })
+    private static mapEntryToRow = (entry) => {
+        const size: number = PanelService.calculateSize(entry.response);
+
+        return {
+            name: PanelService.getFileName(entry.request.url),
+            method: entry.request.method,
+            status: entry.response.status,
+            type: entry.response.content ? entry.response.content.mimeType : "",
+            size,
+            sizeString: PanelService.formatSize(size),
+            time: Math.round(entry.time),
+        };
+    }
+
+    private static calculateSize(response): number {
+        if (response.bodySize === 0 && response.headersSize === 0) {
+            return 0;
+        }
+
+        if (response.bodySize < 0 && response.headersSize < 0) {
+            return -1;
+        }
+
+        return response.bodySize + response.headersSize;
+    }
 
     private static formatSize(size: number): string {
         if (size === 0) {
