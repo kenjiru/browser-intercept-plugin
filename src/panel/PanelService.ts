@@ -3,6 +3,7 @@ import FormattingUtils from "../utils/FormattingUtils";
 
 export interface IRequestRow {
     name: string;
+    url: string;
     method: string;
     status: number;
     type: string;
@@ -28,6 +29,7 @@ export default class PanelService {
 
         return {
             name: PanelService.getFileName(entry.request.url),
+            url: entry.request.url,
             method: entry.request.method,
             status: entry.response.status,
             type: entry.response.content ? entry.response.content.mimeType : "",
