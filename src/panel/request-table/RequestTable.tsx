@@ -52,6 +52,7 @@ const columns = [{
 
 interface IRequestTableProps {
     dataSource: any;
+    onSelectRow: (selectedRow: IRequestRow) => void;
 }
 
 const OFFSET_TOP: number = 30;
@@ -80,6 +81,11 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 size="small"
                 rowClassName={RequestTable.getRowClassName}
                 scroll={{y: height - OFFSET_TOP}}
+                onRow={(record) => ({
+                    onClick: () => {
+                        this.props.onSelectRow(record);
+                    }
+                })}
             />
         );
     }
