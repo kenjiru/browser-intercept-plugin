@@ -84,7 +84,7 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 onRow={(record) => ({
                     onClick: () => {
                         this.props.onSelectRow(record);
-                    }
+                    },
                 })}
             />
         );

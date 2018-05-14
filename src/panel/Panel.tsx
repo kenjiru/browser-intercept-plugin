@@ -5,6 +5,7 @@ import PanelService, {IRequestRow} from "./PanelService";
 import RequestDetails from "./request-details/RequestDetails";
 import RequestFilter from "./request-filter/RequestFilter";
 import RequestTable from "./request-table/RequestTable";
+import SmartSplitPane from "./smart-split-pane/SmartSplitPane";
 
 import "./Panel.less";
 
@@ -24,7 +25,7 @@ export default class Panel extends PureComponent<any, IPanelState> {
     }
 
     public componentDidMount(): void {
-        setTimeout(() => {
+        setInterval(() => {
             PanelService.getRequestRows().then((requestRows) => {
                 this.setState({
                     requestRows,
@@ -37,31 +38,33 @@ export default class Panel extends PureComponent<any, IPanelState> {
         return (
             <div>
                 <RequestFilter onChange={this.handleFilterChange} />
-                <div>
+                <SmartSplitPane isDisabled={this.isRowSelected() === false}>
                     <RequestTable
                         dataSource={this.getTableDataSource()}
                         onSelectRow={this.handleTableRowSelected}
                     />
                     {this.renderRequestDetails()}
-                </div>
+                </SmartSplitPane>
             </div>
         );
     }
 
     private renderRequestDetails(): ReactElement<any> {
-        if (_.isEmpty(this.state.selectedRow)) {
-            return null;
+        if (this.isRowSelected() === false) {
+            return;
         }
 
         return (
             <RequestDetails
                 requestRow={this.state.selectedRow}
             />
-        )
+        );
     }
 
     private handleTableRowSelected = (selectedRow: IRequestRow): void => {
-        console.log(selectedRow);
+        if (this.isEqualToSelectedRow(selectedRow)) {
+            selectedRow = null;
+        }
 
         this.setState({
             selectedRow,
@@ -82,5 +85,13 @@ export default class Panel extends PureComponent<any, IPanelState> {
         const filter: string = this.state.filter;
 
         return _.isEmpty(filter) || _.isEmpty(tableRow.url) || tableRow.url.indexOf(filter) > -1;
+    }
+
+    private isEqualToSelectedRow(selectedRow: IRequestRow): boolean {
+        return _.isEmpty(this.state.selectedRow) === false && this.state.selectedRow.name === selectedRow.name;
+    }
+
+    private isRowSelected(): boolean {
+        return _.isNil(this.state.selectedRow) === false;
     }
 }
