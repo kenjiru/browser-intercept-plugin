@@ -1,4 +1,6 @@
+import * as _ from "lodash";
 import {Table} from "antd";
+import * as classNames from "classnames";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
 
@@ -53,15 +55,12 @@ const columns = [{
 interface IRequestTableProps {
     dataSource: any;
     onSelectRow: (selectedRow: IRequestRow) => void;
+    selectedRow: IRequestRow;
 }
 
 const OFFSET_TOP: number = 30;
 
 export default class RequestTable extends PureComponent<IRequestTableProps> {
-    private static getRowClassName(record: any, index: number): string {
-        return index % 2 === 0 ? "row-even" : "row-odd";
-    }
-
     public render(): ReactElement<Table<IRequestRow>> {
         return (
             <WindowSize
@@ -79,7 +78,7 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 columns={columns}
                 pagination={false}
                 size="small"
-                rowClassName={RequestTable.getRowClassName}
+                rowClassName={this.getRowClassName}
                 scroll={{y: height - OFFSET_TOP}}
                 onRow={(record) => ({
                     onClick: () => {
@@ -88,6 +87,21 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 })}
             />
         );
+    }
+
+    private getRowClassName = (record: IRequestRow, index: number): string => {
+        const isRowSelected: boolean = this.isRowSelected(record);
+
+        return classNames({
+            "row-odd": index % 2 === 1,
+            "row-selected": isRowSelected,
+        });
+    }
+
+    private isRowSelected(row: IRequestRow): boolean {
+        const selectedRow: IRequestRow = this.props.selectedRow;
+
+        return _.isEmpty(selectedRow) === false && selectedRow.key === row.key;
     }
 
     private getTimeStamp(): number {

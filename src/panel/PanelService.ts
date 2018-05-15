@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import FormattingUtils from "../utils/FormattingUtils";
 
 export interface IRequestRow {
+    key: number;
     name: string;
     url: string;
     method: string;
@@ -25,9 +26,11 @@ export default class PanelService {
     }
 
     private static mapEntryToRow = (entry) => {
+        const time: number = Math.round(entry.time);
         const size: number = PanelService.calculateSize(entry.response);
 
         return {
+            key: time,
             name: PanelService.getFileName(entry.request.url),
             url: entry.request.url,
             method: entry.request.method,
@@ -35,7 +38,7 @@ export default class PanelService {
             type: entry.response.content ? entry.response.content.mimeType : "",
             size,
             sizeString: PanelService.formatSize(size),
-            time: Math.round(entry.time),
+            time,
         };
     }
 

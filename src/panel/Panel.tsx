@@ -42,6 +42,7 @@ export default class Panel extends PureComponent<any, IPanelState> {
                     <RequestTable
                         dataSource={this.getTableDataSource()}
                         onSelectRow={this.handleTableRowSelected}
+                        selectedRow={this.state.selectedRow}
                     />
                     {this.renderRequestDetails()}
                 </SmartSplitPane>

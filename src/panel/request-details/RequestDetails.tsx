@@ -9,7 +9,9 @@ interface IRequestDetailsProps {
 export default class RequestDetails extends PureComponent<IRequestDetailsProps> {
     public render(): ReactElement<any> {
         return (
-            <div className="request-details">Request Details</div>
+            <div className="request-details">
+                Request Details
+            </div>
         );
     }
 }
