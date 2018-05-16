@@ -25,12 +25,12 @@ export default class PanelService {
         });
     }
 
-    private static mapEntryToRow = (entry) => {
+    private static mapEntryToRow = (entry, index: number) => {
         const time: number = Math.round(entry.time);
         const size: number = PanelService.calculateSize(entry.response);
 
         return {
-            key: time,
+            key: index,
             name: PanelService.getFileName(entry.request.url),
             url: entry.request.url,
             method: entry.request.method,
