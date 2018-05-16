@@ -1,6 +1,6 @@
-import * as _ from "lodash";
 import {Table} from "antd";
 import * as classNames from "classnames";
+import * as _ from "lodash";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
 
@@ -15,12 +15,15 @@ const compareStr = (first: string = "", second: string = ""): number => {
 
 const compareNumber = (first: number, second: number): number => first - second;
 
-const columns = [{
+const minimalColumns = [{
     title: "Name",
     dataIndex: "name",
     key: "name",
     sorter: (first: IRequestRow, second: IRequestRow): number => compareStr(first.name, second.name),
-}, {
+},
+];
+
+const fullColumns = [...minimalColumns, {
     title: "Method",
     dataIndex: "method",
     key: "method",
@@ -75,7 +78,7 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
             <Table
                 className="request-table"
                 dataSource={this.props.dataSource}
-                columns={columns}
+                columns={this.getColumns()}
                 pagination={false}
                 size="small"
                 rowClassName={this.getRowClassName}
@@ -87,6 +90,14 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 })}
             />
         );
+    }
+
+    private getColumns(): any[] {
+        if (this.hasSelectedRow()) {
+            return minimalColumns;
+        }
+
+        return fullColumns;
     }
 
     private getRowClassName = (record: IRequestRow, index: number): string => {
@@ -106,5 +117,9 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
 
     private getTimeStamp(): number {
         return new Date().getTime();
+    }
+
+    private hasSelectedRow(): boolean {
+        return _.isEmpty(this.props.selectedRow) === false;
     }
 }
