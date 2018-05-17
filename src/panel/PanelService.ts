@@ -11,6 +11,7 @@ export interface IRequestRow {
     size: number;
     sizeString: string;
     time: number;
+    harEntry: any;
 }
 
 export default class PanelService {
@@ -39,6 +40,7 @@ export default class PanelService {
             size,
             sizeString: PanelService.formatSize(size),
             time,
+            harEntry: entry,
         };
     }
 

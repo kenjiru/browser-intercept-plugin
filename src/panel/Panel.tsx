@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
 import PanelService, {IRequestRow} from "./PanelService";
-import RequestDetails from "./request-details/RequestDetails";
+import EntryDetails from "./entry-details/EntryDetails";
 import RequestFilter from "./request-filter/RequestFilter";
 import RequestTable from "./request-table/RequestTable";
 import SmartSplitPane from "./smart-split-pane/SmartSplitPane";
@@ -44,19 +44,19 @@ export default class Panel extends PureComponent<any, IPanelState> {
                         onSelectRow={this.handleTableRowSelected}
                         selectedRow={this.state.selectedRow}
                     />
-                    {this.renderRequestDetails()}
+                    {this.renderEntryDetails()}
                 </SmartSplitPane>
             </div>
         );
     }
 
-    private renderRequestDetails(): ReactElement<any> {
+    private renderEntryDetails(): ReactElement<any> {
         if (this.isRowSelected() === false) {
             return;
         }
 
         return (
-            <RequestDetails
+            <EntryDetails
                 requestRow={this.state.selectedRow}
             />
         );
