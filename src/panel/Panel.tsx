@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
-import PanelService, {IRequestRow} from "./PanelService";
 import EntryDetails from "./entry-details/EntryDetails";
+import PanelService, {IRequestRow} from "./PanelService";
 import RequestFilter from "./request-filter/RequestFilter";
 import RequestTable from "./request-table/RequestTable";
 import SmartSplitPane from "./smart-split-pane/SmartSplitPane";
@@ -57,7 +57,7 @@ export default class Panel extends PureComponent<any, IPanelState> {
 
         return (
             <EntryDetails
-                requestRow={this.state.selectedRow}
+                harEntry={this.state.selectedRow.harEntry}
             />
         );
     }

@@ -2,11 +2,12 @@ import {Tabs} from "antd";
 import {PureComponent, ReactElement} from "react";
 import * as React from "react";
 
-import {IRequestRow} from "../PanelService";
 import RequestTab from "./RequestTab";
 
+import "./EntryDetails.less";
+
 interface IRequestDetailsProps {
-    requestRow: IRequestRow;
+    harEntry: any;
 }
 
 export default class EntryDetails extends PureComponent<IRequestDetailsProps> {
@@ -15,20 +16,24 @@ export default class EntryDetails extends PureComponent<IRequestDetailsProps> {
             <div className="entry-details">
                 <Tabs
                     defaultActiveKey="1"
-                    onChange={this.handleTabChange}
                     size="small"
                 >
-                    <Tabs.TabPane tab="Request" key="1">
+                    <Tabs.TabPane
+                        tab="Request"
+                        key="1"
+                    >
                         <RequestTab
-                            harEntry={this.props.requestRow.harEntry}
+                            harRequest={this.props.harEntry.request}
                         />
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab="Response" key="2">Content of Tab Pane 2</Tabs.TabPane>
+                    <Tabs.TabPane
+                        tab="Response"
+                        key="2"
+                    >
+                        Content of Tab Pane 2
+                    </Tabs.TabPane>
                 </Tabs>
             </div>
         );
-    }
-
-    private handleTabChange = () => {
     }
 }
