@@ -56,6 +56,7 @@ const fullColumns = [...minimalColumns, {
 }];
 
 interface IRequestTableProps {
+    className?: string;
     dataSource: any;
     onSelectRow: (selectedRow: IRequestRow) => void;
     selectedRow: IRequestRow;
@@ -65,6 +66,11 @@ const OFFSET_TOP: number = 30;
 
 export default class RequestTable extends PureComponent<IRequestTableProps> {
     public render(): ReactElement<Table<IRequestRow>> {
+        return this.renderTable();
+    }
+
+    // FIXME Use this method after fixing the panel layout issues
+    private renderResizableTable(): ReactElement<any> {
         return (
             <WindowSize
                 render={this.renderTable}
@@ -73,16 +79,15 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
         );
     }
 
-    private renderTable = (width: number, height: number): ReactElement<Table<IRequestRow>> => {
+    private renderTable = (width?: number, height?: number): ReactElement<Table<IRequestRow>> => {
         return (
             <Table
-                className="request-table"
+                className={this.getClassName()}
                 dataSource={this.props.dataSource}
                 columns={this.getColumns()}
                 pagination={false}
                 size="small"
                 rowClassName={this.getRowClassName}
-                scroll={{y: height - OFFSET_TOP}}
                 onRow={(record) => ({
                     onClick: () => {
                         this.props.onSelectRow(record);
@@ -121,5 +126,12 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
 
     private hasSelectedRow(): boolean {
         return _.isEmpty(this.props.selectedRow) === false;
+    }
+
+    private getClassName(): string {
+        return classNames(
+            "request-table",
+            this.props.className,
+        );
     }
 }

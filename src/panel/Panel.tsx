@@ -5,7 +5,7 @@ import EntryDetails from "./entry-details/EntryDetails";
 import PanelService, {IRequestRow} from "./PanelService";
 import RequestFilter from "./request-filter/RequestFilter";
 import RequestTable from "./request-table/RequestTable";
-import SmartSplitPane from "./smart-split-pane/SmartSplitPane";
+import SimpleSplitPane from "./simple-split-pane/SimpleSplitPane";
 
 import "./Panel.less";
 
@@ -36,16 +36,16 @@ export default class Panel extends PureComponent<any, IPanelState> {
 
     public render(): ReactElement<RequestTable> {
         return (
-            <div>
+            <div className="panel">
                 <RequestFilter onChange={this.handleFilterChange} />
-                <SmartSplitPane isDisabled={this.isRowSelected() === false}>
+                <SimpleSplitPane isDisabled={this.isRowSelected() === false}>
                     <RequestTable
                         dataSource={this.getTableDataSource()}
                         onSelectRow={this.handleTableRowSelected}
                         selectedRow={this.state.selectedRow}
                     />
                     {this.renderEntryDetails()}
-                </SmartSplitPane>
+                </SimpleSplitPane>
             </div>
         );
     }
