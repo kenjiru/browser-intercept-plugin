@@ -4,6 +4,7 @@ import {PureComponent, ReactElement} from "react";
 import * as React from "react";
 
 import RequestTab from "./RequestTab";
+import ResponseTab from "./ResponseTab";
 
 import "./EntryDetails.less";
 
@@ -32,7 +33,9 @@ export default class EntryDetails extends PureComponent<IRequestDetailsProps> {
                         tab="Response"
                         key="2"
                     >
-                        Content of Tab Pane 2
+                        <ResponseTab
+                            harResponse={this.props.harEntry.response}
+                        />
                     </Tabs.TabPane>
                 </Tabs>
             </div>
