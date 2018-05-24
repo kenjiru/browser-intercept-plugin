@@ -1,4 +1,5 @@
 import {Collapse} from "antd";
+import * as _ from "lodash";
 import {PureComponent, ReactElement} from "react";
 import * as React from "react";
 
@@ -40,6 +41,10 @@ export default class ResponseTab extends PureComponent<IResponseTabProps> {
             return "Not available";
         }
 
-        return JSON.stringify(harResponse.content);
+        if (_.isEmpty(harResponse.content.text) === false) {
+            return harResponse.content.text;
+        }
+
+        return "Empty";
     }
 }
