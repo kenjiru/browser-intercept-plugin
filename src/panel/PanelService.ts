@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import {rowsStore} from "../model/RowsStore";
 import FormattingUtils from "../utils/FormattingUtils";
 
 export interface IRequestRow {
@@ -15,7 +16,28 @@ export interface IRequestRow {
 }
 
 export default class PanelService {
-    public static getRequestRows(): Promise<IRequestRow[]> {
+    public static handleRequests(): void {
+        PanelService.getInitialRequests();
+        PanelService.handleNewRequests();
+    }
+
+    private static handleNewRequests(): void {
+        chrome.devtools.network.onRequestFinished.addListener((harEntry: any) => {
+            const index: number = rowsStore.getRows().length;
+            const requestRow: IRequestRow = PanelService.mapEntryToRow(harEntry, index);
+
+            rowsStore.addSingleItem(requestRow);
+        });
+    }
+
+    private static getInitialRequests(): void {
+        setTimeout(() => {
+            PanelService.getRequestRows().then((requestRows) =>
+                rowsStore.addMultipleItems(requestRows));
+        }, 5000);
+    }
+
+    private static getRequestRows(): Promise<IRequestRow[]> {
         return new Promise((resolve, reject) => {
             chrome.devtools.network.getHAR((harLog: any) => {
                 const harEntries = harLog.entries;
@@ -26,7 +48,7 @@ export default class PanelService {
         });
     }
 
-    private static mapEntryToRow = (entry, index: number) => {
+    private static mapEntryToRow = (entry: any, index: number): IRequestRow => {
         const time: number = Math.round(entry.time);
         const size: number = PanelService.calculateSize(entry.response);
 

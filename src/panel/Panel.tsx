@@ -1,8 +1,10 @@
 import * as _ from "lodash";
+import {inject, observer} from "mobx-react";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
+import {RowsStore, rowsStore} from "../model/RowsStore";
 import EntryDetails from "./entry-details/EntryDetails";
-import PanelService, {IRequestRow} from "./PanelService";
+import {IRequestRow} from "./PanelService";
 import RequestFilter from "./request-filter/RequestFilter";
 import RequestTable from "./request-table/RequestTable";
 import SimpleSplitPane from "./simple-split-pane/SimpleSplitPane";
@@ -10,28 +12,22 @@ import SimpleSplitPane from "./simple-split-pane/SimpleSplitPane";
 import "./Panel.less";
 
 interface IPanelState {
-    requestRows?: IRequestRow[];
     selectedRow?: IRequestRow;
     filter?: string;
 }
 
-export default class Panel extends PureComponent<any, IPanelState> {
+interface IPanelProps {
+    rowsStore?: RowsStore;
+}
+
+@inject("rowsStore")
+@observer
+export default class Panel extends PureComponent<IPanelProps, IPanelState> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            requestRows: [],
         };
-    }
-
-    public componentDidMount(): void {
-        setInterval(() => {
-            PanelService.getRequestRows().then((requestRows) => {
-                this.setState({
-                    requestRows,
-                });
-            });
-        }, 1000);
     }
 
     public render(): ReactElement<RequestTable> {
@@ -79,7 +75,7 @@ export default class Panel extends PureComponent<any, IPanelState> {
     }
 
     private getTableDataSource(): IRequestRow[] {
-        return _.filter(this.state.requestRows, this.filterTableRow);
+        return _.filter(this.props.rowsStore.getRows(), this.filterTableRow);
     }
 
     private filterTableRow = (tableRow: IRequestRow): boolean => {
