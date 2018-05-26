@@ -22,9 +22,9 @@ export default class PanelService {
     }
 
     private static handleNewRequests(): void {
-        chrome.devtools.network.onRequestFinished.addListener((harEntry: any) => {
+        chrome.devtools.network.onRequestFinished.addListener(async (harEntry: any) => {
             const index: number = rowsStore.getRows().length;
-            const requestRow: IRequestRow = PanelService.mapEntryToRow(harEntry, index);
+            const requestRow: IRequestRow = await PanelService.mapEntryToRow(harEntry, index);
 
             rowsStore.addSingleItem(requestRow);
         });
@@ -32,25 +32,28 @@ export default class PanelService {
 
     private static getInitialRequests(): void {
         setTimeout(() => {
-            PanelService.getRequestRows().then((requestRows) =>
-                rowsStore.addMultipleItems(requestRows));
+            PanelService.getRequestRows().then(rowsStore.addMultipleItems);
         }, 5000);
     }
 
-    private static getRequestRows(): Promise<IRequestRow[]> {
-        return new Promise((resolve, reject) => {
-            chrome.devtools.network.getHAR((harLog: any) => {
-                const harEntries = harLog.entries;
-                const requestRows: IRequestRow[] = harEntries.map(PanelService.mapEntryToRow);
+    private static async getRequestRows(): Promise<IRequestRow[]> {
+        const harLog: any = await PanelService.getHarLog();
+        const harEntries: any[] = harLog.entries;
 
-                resolve(requestRows);
-            });
+        return await Promise.all(harEntries.map(PanelService.mapEntryToRow));
+    }
+
+    private static getHarLog(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            chrome.devtools.network.getHAR(resolve);
         });
     }
 
-    private static mapEntryToRow = (entry: any, index: number): IRequestRow => {
+    private static async mapEntryToRow(entry: any, index: number): Promise<IRequestRow> {
         const time: number = Math.round(entry.time);
         const size: number = PanelService.calculateSize(entry.response);
+
+        entry.response.content.text = await PanelService.getHarEntryContent(entry);
 
         return {
             key: index,
@@ -64,6 +67,12 @@ export default class PanelService {
             time,
             harEntry: entry,
         };
+    }
+
+    private static async getHarEntryContent(harEntry: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            harEntry.getContent(resolve);
+        });
     }
 
     private static calculateSize(response): number {
