@@ -15,16 +15,16 @@ export interface IRequestRow {
     harEntry: any;
 }
 
-export default class PanelService {
+export default class HarService {
     public static handleRequests(): void {
-        PanelService.getInitialRequests();
-        PanelService.handleNewRequests();
+        HarService.getInitialRequests();
+        HarService.handleNewRequests();
     }
 
     private static handleNewRequests(): void {
         chrome.devtools.network.onRequestFinished.addListener(async (harEntry: any) => {
             const index: number = rowsStore.getRows().length;
-            const requestRow: IRequestRow = await PanelService.mapEntryToRow(harEntry, index);
+            const requestRow: IRequestRow = await HarService.mapEntryToRow(harEntry, index);
 
             rowsStore.addSingleItem(requestRow);
         });
@@ -32,15 +32,15 @@ export default class PanelService {
 
     private static getInitialRequests(): void {
         setTimeout(() => {
-            PanelService.getRequestRows().then(rowsStore.addMultipleItems);
+            HarService.getRequestRows().then(rowsStore.addMultipleItems);
         }, 5000);
     }
 
     private static async getRequestRows(): Promise<IRequestRow[]> {
-        const harLog: any = await PanelService.getHarLog();
+        const harLog: any = await HarService.getHarLog();
         const harEntries: any[] = harLog.entries;
 
-        return await Promise.all(harEntries.map(PanelService.mapEntryToRow));
+        return await Promise.all(harEntries.map(HarService.mapEntryToRow));
     }
 
     private static getHarLog(): Promise<any> {
@@ -51,19 +51,19 @@ export default class PanelService {
 
     private static async mapEntryToRow(entry: any, index: number): Promise<IRequestRow> {
         const time: number = Math.round(entry.time);
-        const size: number = PanelService.calculateSize(entry.response);
+        const size: number = HarService.calculateSize(entry.response);
 
-        entry.response.content.text = await PanelService.getHarEntryContent(entry);
+        entry.response.content.text = await HarService.getHarEntryContent(entry);
 
         return {
             key: index,
-            name: PanelService.getFileName(entry.request.url),
+            name: HarService.getFileName(entry.request.url),
             url: entry.request.url,
             method: entry.request.method,
             status: entry.response.status,
             type: entry.response.content ? entry.response.content.mimeType : "",
             size,
-            sizeString: PanelService.formatSize(size),
+            sizeString: HarService.formatSize(size),
             time,
             harEntry: entry,
         };

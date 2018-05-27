@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import {PureComponent, ReactElement} from "react";
 
-import {IRequestRow} from "../PanelService";
+import {IRequestRow} from "../../services/HarService";
 import WindowSize from "../window-size/WindowSize";
 
 import "./RequestTable.less";

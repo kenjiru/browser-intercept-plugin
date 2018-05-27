@@ -4,11 +4,11 @@ import * as ReactDOM from "react-dom";
 
 import {rowsStore} from "./model/RowsStore";
 import Panel from "./panel/Panel";
-import PanelService from "./panel/PanelService";
+import HarService from "./services/HarService";
 
 import "./panel/style.less";
 
-PanelService.handleRequests();
+HarService.handleRequests();
 
 ReactDOM.render(
     (

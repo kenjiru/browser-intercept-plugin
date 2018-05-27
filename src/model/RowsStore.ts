@@ -1,5 +1,5 @@
 import {IObservableArray, observable} from "mobx";
-import {IRequestRow} from "../panel/PanelService";
+import {IRequestRow} from "../services/HarService";
 
 export class RowsStore {
     @observable
