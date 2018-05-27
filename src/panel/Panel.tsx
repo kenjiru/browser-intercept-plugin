@@ -85,7 +85,7 @@ export default class Panel extends PureComponent<IPanelProps, IPanelState> {
     }
 
     private isEqualToSelectedRow(selectedRow: IRequestRow): boolean {
-        return _.isEmpty(this.state.selectedRow) === false && this.state.selectedRow.name === selectedRow.name;
+        return _.isEmpty(this.state.selectedRow) === false && this.state.selectedRow.key === selectedRow.key;
     }
 
     private isRowSelected(): boolean {

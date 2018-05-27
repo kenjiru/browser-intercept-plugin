@@ -3,7 +3,7 @@ import {rowsStore} from "../model/RowsStore";
 import FormattingUtils from "../utils/FormattingUtils";
 
 export interface IRequestRow {
-    key: number;
+    key: string;
     name: string;
     url: string;
     method: string;
@@ -23,8 +23,7 @@ export default class HarService {
 
     private static handleNewRequests(): void {
         chrome.devtools.network.onRequestFinished.addListener(async (harEntry: any) => {
-            const index: number = rowsStore.getRows().length;
-            const requestRow: IRequestRow = await HarService.mapEntryToRow(harEntry, index);
+            const requestRow: IRequestRow = await HarService.mapEntryToRow(harEntry);
 
             rowsStore.addSingleItem(requestRow);
         });
@@ -49,17 +48,19 @@ export default class HarService {
         });
     }
 
-    private static async mapEntryToRow(entry: any, index: number): Promise<IRequestRow> {
+    private static async mapEntryToRow(entry: any): Promise<IRequestRow> {
         const time: number = Math.round(entry.time);
         const size: number = HarService.calculateSize(entry.response);
+        const method: string = entry.request.method;
+        const key: string = `${time}-${entry.request.url}-${method}`;
 
         entry.response.content.text = await HarService.getHarEntryContent(entry);
 
         return {
-            key: index,
+            key,
             name: HarService.getName(entry),
             url: entry.request.url,
-            method: entry.request.method,
+            method,
             status: entry.response.status,
             type: entry.response.content ? entry.response.content.mimeType : "",
             size,
