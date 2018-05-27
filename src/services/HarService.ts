@@ -57,7 +57,7 @@ export default class HarService {
 
         return {
             key: index,
-            name: HarService.getFileName(entry.request.url),
+            name: HarService.getName(entry),
             url: entry.request.url,
             method: entry.request.method,
             status: entry.response.status,
@@ -67,6 +67,23 @@ export default class HarService {
             time,
             harEntry: entry,
         };
+    }
+
+    private static getName(harEntry: any): string {
+        const url: string = harEntry.request.url;
+        const fileName: string = HarService.getFileName(url);
+
+        if (_.isEmpty(fileName) === false) {
+            return fileName;
+        }
+
+        const hostName: string = HarService.getHostName(url);
+
+        if (_.isEmpty(hostName) === false) {
+            return hostName;
+        }
+
+        return harEntry.request.url;
     }
 
     private static async getHarEntryContent(harEntry: any): Promise<any> {
@@ -101,6 +118,12 @@ export default class HarService {
         }
 
         return FormattingUtils.formatBytes(size);
+    }
+
+    private static getHostName(path: string): string {
+        const url = new URL(path);
+
+        return url.hostname;
     }
 
     private static getFileName(path: string): string {
