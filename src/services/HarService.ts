@@ -21,6 +21,12 @@ export default class HarService {
         HarService.handleNewRequests();
     }
 
+    public static async getHarEntryContent(harEntry: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            harEntry.getContent(resolve);
+        });
+    }
+
     private static handleNewRequests(): void {
         chrome.devtools.network.onRequestFinished.addListener(async (harEntry: any) => {
             const requestRow: IRequestRow = await HarService.mapEntryToRow(harEntry);
@@ -30,9 +36,7 @@ export default class HarService {
     }
 
     private static getInitialRequests(): void {
-        setTimeout(() => {
-            HarService.getRequestRows().then(rowsStore.addMultipleItems);
-        }, 5000);
+        HarService.getRequestRows().then(rowsStore.addMultipleItems);
     }
 
     private static async getRequestRows(): Promise<IRequestRow[]> {
@@ -54,7 +58,10 @@ export default class HarService {
         const method: string = entry.request.method;
         const key: string = `${time}-${entry.request.url}-${method}`;
 
-        entry.response.content.text = await HarService.getHarEntryContent(entry);
+        const content: any = await HarService.getHarEntryContent(entry);
+        entry.response.content.text = content;
+
+        console.log(entry.response.content.text);
 
         return {
             key,
@@ -85,12 +92,6 @@ export default class HarService {
         }
 
         return harEntry.request.url;
-    }
-
-    private static async getHarEntryContent(harEntry: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            harEntry.getContent(resolve);
-        });
     }
 
     private static calculateSize(response): number {
