@@ -88,14 +88,16 @@ export default class RequestTable extends PureComponent<IRequestTableProps> {
                 pagination={false}
                 size="small"
                 rowClassName={this.getRowClassName}
-                onRow={(record) => ({
-                    onClick: () => {
-                        this.props.onSelectRow(record);
-                    },
-                })}
+                onRow={this.handleRow}
             />
         );
     }
+
+    private handleRow = (record) => ({
+        onClick: () => {
+            this.props.onSelectRow(record);
+        },
+    })
 
     private getColumns(): any[] {
         if (this.hasSelectedRow()) {
