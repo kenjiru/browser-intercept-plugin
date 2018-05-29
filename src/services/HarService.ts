@@ -16,15 +16,15 @@ export interface IRequestRow {
 }
 
 export default class HarService {
-    public static handleRequests(): void {
-        HarService.getInitialRequests();
-        HarService.handleNewRequests();
-    }
-
     public static async getHarEntryContent(harEntry: any): Promise<any> {
         return new Promise((resolve, reject) => {
             harEntry.getContent(resolve);
         });
+    }
+
+    public static handleRequests(): void {
+        HarService.getInitialRequests();
+        HarService.handleNewRequests();
     }
 
     private static handleNewRequests(): void {
@@ -43,7 +43,7 @@ export default class HarService {
         const harLog: any = await HarService.getHarLog();
         const harEntries: any[] = harLog.entries;
 
-        return await Promise.all(harEntries.map(HarService.mapEntryToRow));
+        return await harEntries.map(HarService.mapEntryToRow);
     }
 
     private static getHarLog(): Promise<any> {
@@ -52,16 +52,11 @@ export default class HarService {
         });
     }
 
-    private static async mapEntryToRow(entry: any): Promise<IRequestRow> {
+    private static mapEntryToRow(entry: any): IRequestRow {
         const time: number = Math.round(entry.time);
         const size: number = HarService.calculateSize(entry.response);
         const method: string = entry.request.method;
         const key: string = `${time}-${entry.request.url}-${method}`;
-
-        const content: any = await HarService.getHarEntryContent(entry);
-        entry.response.content.text = content;
-
-        console.log(entry.response.content.text);
 
         return {
             key,

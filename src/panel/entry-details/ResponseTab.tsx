@@ -1,5 +1,4 @@
 import {Collapse} from "antd";
-import * as _ from "lodash";
 import {PureComponent, ReactElement} from "react";
 import * as React from "react";
 
@@ -21,30 +20,7 @@ export default class ResponseTab extends PureComponent<IResponseTabProps> {
                     key="1"
                     headers={this.props.harResponse.headers}
                 />
-
-                <Collapse.Panel
-                    header="Response Content"
-                    key="2"
-                >
-                    <div>
-                        {this.getResponseContent()}
-                    </div>
-                </Collapse.Panel>
             </Collapse>
         );
-    }
-
-    private getResponseContent(): string {
-        const {harResponse} = this.props;
-
-        if (harResponse.bodySize === -1) {
-            return "Not available";
-        }
-
-        if (_.isEmpty(harResponse.content.text) === false) {
-            return harResponse.content.text;
-        }
-
-        return "Empty";
     }
 }
